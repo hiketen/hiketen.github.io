@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Local Storage Example #1</title>
+  <script>
+    function loadMe() {
+	// Using localStorage
+	// store data
+	var dataStored = localStorage.dataStored;
+	if (!dataStored) {
+	    console.log("Storing data");
+	    localStorage.lastName = "Bunny";
+	    localStorage.firstName = "Bugs";
+	    localStorage.location = "Posedion"
+	    localStorage.dataStored = "Stored"
+	    
+	}
+    }
+    function retrieveData() {
+	var lastName = localStorage.lastName;
+	var firstName = localStorage.firstName;
+	var location = localStorage.location;
+	document.getElementById("ul-1").innerHTML =
+	      "<li> Last Name: " + lastName  + "</li>"
+	    + "<li> First Name: " + firstName  + "</li>" 
+	    + "<li> Location: " + location  + "</li>" ; 
+	
+    }
+  </script>
+</head>
+<body onload="loadMe()">
+  <button onClick="retrieveData()"> Retrieve Data</button>
+  <ul id="ul-1"> </ul>
+</body>
+</html>
+
