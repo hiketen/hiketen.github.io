@@ -1,0 +1,26 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<title>Worker example: One-core computation with terminate()</title>
+</head>
+<body>
+<p>The highest prime number discovered so far is: <output id="result"></output></p>
+<script>
+if(window.Worker){
+   // web workers supported by the browser
+   var worker=new Worker("worker2a.js");
+   worker.onmessage=function(event){
+       document.getElementById('result').textContent = event.data;
+   };
+}else{
+   // the browser does not support web workers
+   alert("Sorry, your browser does not support Web Workers");
+}
+setTimeout(function(){
+   // After 10 seconds, we kill the worker
+   worker.terminate();
+   document.body.appendChild(document.createTextNode("Worker killed, 10 seconds elapsed !")
+);}, 10000);
+</script>
+</body>
+</html>
