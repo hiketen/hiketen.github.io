@@ -1,0 +1,29 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<title>Worker example: One-core computation</title>
+</head>
+<body>
+<p>The most simple example of Web Workers</p>
+<script>
+
+   // create a new worker (a thread that will be run in the background)
+   var worker = new Worker("worker1.js");
+
+   // Watch for messages from the worker
+   worker.onmessage = function(e){
+      // Do something with the message from the client: e.data
+      alert("Got message that the background work is finished...")
+   };
+
+   // Handle errors
+   worker.onerror = function (event) {
+      console.log(event.message, event);
+   };
+
+   // Send a message to the worker
+   worker.postMessage("start");
+
+</script>
+</body>
+</html>
