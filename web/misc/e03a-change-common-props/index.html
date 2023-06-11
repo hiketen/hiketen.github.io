@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>JavaScript can change CSS properties on the fly</title>
+
+<style>
+#theDiv {
+  width:105px;
+  height:33px;
+  background-color: pink;
+}
+</style>
+
+<script>
+var divElem;
+
+function init() {
+  console.log("page loaded and DOM is ready");
+  
+  // use the selection API to select the div
+  divElem = document.querySelector("#theDiv");
+}
+
+function changeStyle() {
+  console.log("add border");
+  divElem.style.border = "5px dashed purple";
+  divElem.style.padding = "10px";
+  divElem.style.backgroundColor = "lightGreen";
+}
+</script>
+
+</head>
+<body onload="init();">
+
+  <p>Here is a div. Click the button below to change its style!</p>
+    <p>
+      <button onclick="changeStyle();">Change style of the div</button>
+  </p>
+  <div id="theDiv">
+  This is a div!
+</div>
+ 
+</body> 
+</html>
+
