@@ -11,7 +11,7 @@ let score = 0;
 let curQuestion;
 let curQuestionIdx = -1;
 
-let numQuestions = 20;
+let numQuestions = 10;
 
 function getRandomInt(min, max) {
    return min + Math.floor(Math.random() * (max-min));
@@ -61,13 +61,23 @@ function showQuestion() {
       inp.name = 'answer';
       inp.id = 'text-answer-inp';
 
+      inp.addEventListener("keypress", function(event) {
+         // If the user presses the "Enter" key on the keyboard
+         if (event.key === "Enter") {
+            // Cancel the default action, if needed
+            event.preventDefault();
+            // Trigger the button element with a click
+            submitButton.click();
+         }
+      });
+
       qElem.appendChild(inp);
       
    } else {
       for (const i in curQuestion.options) {
 
-	 const div = document.createElement('div');
-	 div.id = 'options';
+   const div = document.createElement('div');
+   div.id = 'options';
    
 	 const inp = document.createElement('input');
 	 inp.type = optType;
