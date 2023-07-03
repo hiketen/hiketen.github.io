@@ -21,7 +21,7 @@ function getNextQuestion() {
    let a = getRandomInt(2,10);
    let b = getRandomInt(2,10);
    curQuestion = {
-      question: `What is ${a} x ${b}`,
+      question: `      ${a} x ${b} = `,
       answer: a*b,
    }
    curQuestionIdx++;
@@ -48,7 +48,7 @@ function showQuestion() {
    resElem.textContent = '';
 
    const qLegend = document.createElement('legend');
-   qLegend.innerHTML = `${curQuestionIdx+1}. ${curQuestion.question}`;
+   qLegend.innerHTML = `Q${curQuestionIdx+1}. &nbsp &nbsp   ${curQuestion.question}`;
    qElem.appendChild(qLegend);
 
    const optType = getOptType(curQuestion);
