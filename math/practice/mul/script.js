@@ -40,7 +40,7 @@ class QBank {
 
       //let outp = '';
       //for (const e of this.numIdxAry)
-	// outp += ` ${e}`;
+	   // outp += ` ${e}`;
       //console.log(outp);
 
       shuffle(this.numIdxAry);
@@ -48,7 +48,7 @@ class QBank {
       this.initAnswers();
       //outp = '';
       //for (const e of this.numIdxAry)
-	// outp += ` ${e}`;
+	   // outp += ` ${e}`;
       //console.log(outp);
 
    }
