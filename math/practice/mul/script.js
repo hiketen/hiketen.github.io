@@ -29,18 +29,23 @@ class QBank {
       this.max = max;
       this.numIdxAry = [];
       this.qIdx = 0;
-      this.range = this.max - this.min + 1;
-      this.numQuestions = this.range * this.range ;
-      //console.log(`min:${this.min}; max:${this.max}; qIdx:${this.qIdx}; range:${this.range};`);
+      this.numTables = this.max - this.min + 1;
+
+      this.tableMinEntry = 2; // x times 2 to x times 9
+      this.tableMaxEntry = 9;
+
+      this.tableSize = this.tableMaxEntry - this.tableMinEntry  + 1;
+      this.numQuestions = this.numTables  * this.tableSize;
+      //console.log(`min:${this.min}; max:${this.max}; qIdx:${this.qIdx}; numTables:${this.numTables}; tableSize:${this.tableSize}; numQuestions:${this.numQuestions}; `);
 
      
       for (let i=0; i < this.numQuestions; i++) {
-	 this.numIdxAry.push(i);
+         this.numIdxAry.push(i);
       }
 
       //let outp = '';
       //for (const e of this.numIdxAry)
-	   // outp += ` ${e}`;
+           // outp += ` ${e}`;
       //console.log(outp);
 
       shuffle(this.numIdxAry);
@@ -48,7 +53,7 @@ class QBank {
       this.initAnswers();
       //outp = '';
       //for (const e of this.numIdxAry)
-	   // outp += ` ${e}`;
+           // outp += ` ${e}`;
       //console.log(outp);
 
    }
@@ -58,28 +63,28 @@ class QBank {
    }
 
    getA(idx) {
-      return Math.floor(this.min + (idx / this.range));
+      return Math.floor(0 + this.min + (idx / this.tableSize));
    }
 
    getB(idx) {
-      return Math.floor(this.min + (idx % this.range));
+      return Math.floor(this.tableMinEntry + (idx % this.tableSize));
    }
 
    getNextQuestion() {
       if (this.qIdx == this.numQuestions) {
-	 return null;
+         return null;
       } else {
-	 let numIdx = this.numIdxAry[this.qIdx];
-	 let range = this.max - this.min + 1;
-	 let a = this.getA(numIdx);
-	 let b = this.getB(numIdx);
-	 const curQuestion = {
-	    question: `${a} x ${b} = `,
-	    answer: a*b,
+         let numIdx = this.numIdxAry[this.qIdx];
+         let a = this.getA(numIdx);
+         let b = this.getB(numIdx);
+	 //console.log(`dbg(getNextQuestion): numIdx:${numIdx}; a:${a}; b:${b};`);
+         const curQuestion = {
+            question: `${a} x ${b} = `,
+            answer: a*b,
 
-	 }
-	 this.qIdx++;
-	 return curQuestion;
+         }
+         this.qIdx++;
+         return curQuestion;
       }
       
    }
@@ -102,19 +107,19 @@ class QBank {
    getIncorrectAnswers(a) {
       let rval = [];
       for (const i in this.answered) {
-	 let str = '';
-	 if ((this.answered[i] === "") || (this.answered[i] != null)) {
-	    let a = this.getA(this.numIdxAry[i]);
-	    let b = this.getB(this.numIdxAry[i]);
-	    str += `${a} x ${b} = ${a*b} ( `
-	    if (this.answered[i] === "" ) {
-	       str += 'Unanswered';
-	    } else {
-	       str += this.answered[i];
-	    }
-	    str += ' )  ';
-	    rval.push(str);
-	 }
+         let str = '';
+         if ((this.answered[i] === "") || (this.answered[i] != null)) {
+            let a = this.getA(this.numIdxAry[i]);
+            let b = this.getB(this.numIdxAry[i]);
+            str += `${a} x ${b} = ${a*b} ( `
+            if (this.answered[i] === "" ) {
+               str += 'Unanswered';
+            } else {
+               str += this.answered[i];
+            }
+            str += ' )  ';
+            rval.push(str);
+         }
       }
       this.answered[this.qIdx-1] = a;
       return rval;
@@ -122,7 +127,6 @@ class QBank {
 
 }
 
-const qb = new QBank(2, 9);
 
 function dbgQB() {
    let tmp;
@@ -198,22 +202,22 @@ function showQuestion() {
    } else {
       for (const i in curQuestion.options) {
 
-	 const div = document.createElement('div');
-	 div.id = 'options';
+         const div = document.createElement('div');
+         div.id = 'options';
    
-	 const inp = document.createElement('input');
-	 inp.type = optType;
-	 inp.name = 'answer';
-	 inp.value = curQuestion.options[i];
-	 inp.id = `option-${i}`;
-	 div.appendChild(inp);
+         const inp = document.createElement('input');
+         inp.type = optType;
+         inp.name = 'answer';
+         inp.value = curQuestion.options[i];
+         inp.id = `option-${i}`;
+         div.appendChild(inp);
 
-	 const label = document.createElement('label');
-	 label.textContent = curQuestion.options[i];
-	 label.htmlFor = `option-${i}`;
-	 div.appendChild(label);
+         const label = document.createElement('label');
+         label.textContent = curQuestion.options[i];
+         label.htmlFor = `option-${i}`;
+         div.appendChild(label);
 
-	 qElem.appendChild(div);
+         qElem.appendChild(div);
       }
    }
 
@@ -240,20 +244,20 @@ function calculateScore() {
       ans = data.get('answer');
       //console.log(`ans is ${ans}`);
       if (ans == expAns)
-	 ansIsCorrect = true;
+         ansIsCorrect = true;
       
    } else {
       ans = data.getAll('answer');
       //console.log(`ans is ${ans}`);
       
       if (expAns.length == ans.length) {
-	 ansIsCorrect = true;
-	 for (e of ans) {
-	    if (!expAns.includes(e)){
-	       ansIsCorrect = false;
-	       break;
-	    }
-	 }
+         ansIsCorrect = true;
+         for (e of ans) {
+            if (!expAns.includes(e)){
+               ansIsCorrect = false;
+               break;
+            }
+         }
       }
    }
 
@@ -263,10 +267,10 @@ function calculateScore() {
       qb.markCorrect();
    } else {
       if ((optType == 'radio') || (optType == 'text')) {
-	 //resElem.textContent = `Incorrect! Answer is ${expAns}`;
-	 qb.markIncorrect(ans);
+         //resElem.textContent = `Incorrect! Answer is ${expAns}`;
+         qb.markIncorrect(ans);
       } else {
-	 //resElem.textContent = `Incorrect! Answer is ${expAns.join(', ')}`;
+         //resElem.textContent = `Incorrect! Answer is ${expAns.join(', ')}`;
       }
    }
 
@@ -281,8 +285,8 @@ function calculateScore() {
       result += "<div>All Done</div>";
       let ans = qb.getIncorrectAnswers();
       for (const e of ans) {
-	 result += `<div>${e}</div>`;
-	 
+         result += `<div>${e}</div>`;
+         
       }
       doneElem.innerHTML = result;
    }
@@ -290,6 +294,25 @@ function calculateScore() {
 
 // ======================================================================
 
+const queryString = window.location.search;
+//console.log(queryString);
+
+const urlParams = new URLSearchParams(queryString);
+
+const typeParam = urlParams.get("type");
+//console.log(typeParam);
+
+var min = 2, max = 9;
+const re = /^(\d+)_(\d+)$/;
+const matchResult = typeParam.match(re);
+if (matchResult) {
+   min = Number(matchResult[1]);
+   max = Number(matchResult[2]);
+}
+//console.log(`min=${min}; max=${max}`);
+
+
+const qb = new QBank(min, max)
 
 formElem.addEventListener(
    "submit",
