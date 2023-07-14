@@ -183,7 +183,7 @@ function showQuestion() {
    if (optType == 'text') {
    
       const inp = document.createElement('input');
-      inp.type = optType;
+      inp.type = 'number';
       inp.name = 'answer';
       inp.id = 'text-answer-inp';
 
@@ -294,23 +294,25 @@ function calculateScore() {
 
 // ======================================================================
 
-const queryString = window.location.search;
-//console.log(queryString);
-
-const urlParams = new URLSearchParams(queryString);
-
-const typeParam = urlParams.get("type");
-//console.log(typeParam);
 
 var min = 2, max = 9;
-const re = /^(\d+)_(\d+)$/;
-const matchResult = typeParam.match(re);
-if (matchResult) {
-   min = Number(matchResult[1]);
-   max = Number(matchResult[2]);
-}
-//console.log(`min=${min}; max=${max}`);
 
+const queryString = window.location.search;
+//console.log(queryString);
+if (queryString) {
+   const urlParams = new URLSearchParams(queryString);
+
+   const typeParam = urlParams.get("type");
+   //console.log(typeParam);
+
+   const re = /^(\d+)_(\d+)$/;
+   const matchResult = typeParam.match(re);
+   if (matchResult) {
+      min = Number(matchResult[1]);
+      max = Number(matchResult[2]);
+   }
+   //console.log(`min=${min}; max=${max}`);
+}
 
 const qb = new QBank(min, max)
 
