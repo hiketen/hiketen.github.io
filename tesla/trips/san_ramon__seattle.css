@@ -1,0 +1,21 @@
+
+.xcontainer {
+    position: relative;
+    width: 100%;
+    border: 2px solid blue;	
+}
+
+.xcontainer .xmt_shasta {
+  position: absolute;
+  top: 12%;
+  left: 23%;
+  background-color: #555;
+  transform: translate(-12%, -23%);
+  -ms-transform: translate(-12%, -23%);
+  color: white;
+  font-size: 16px;
+  padding: 12px 24px;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+}

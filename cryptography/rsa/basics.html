@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <title>RSA Basics</title>
+  <style>
+    .eq1 {
+	padding-left:10px
+    }
+  </style>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</head>
+<body>
+
+
+  
+<h1>Quick Intro</h1>
+
+<p> <b>Note</b> In below description, all the variables are assumed to be integers. </p>
+
+<p>
+Let \( m \) be the plain text message,  The encrypted message \( c \) is computed as
+</p>
+      
+<p class="eq1">
+$$ \begin{align} c = m^e \, \, mod \, \, n \hspace{100cm} \\
+\end{align}$$
+</p>
+
+<p> The pair \( (e,n) \) forms public key. </p>
+
+<p>
+The message is decrypted using following formula:
+</p>
+<p class="eq1">
+$$ \begin{align}r &= c^d \, \, mod \, \, n   \hspace{100cm} \\
+     &= m^{ed} \, \, mod \, \, n   \\
+\end{align}$$
+
+</p>
+
+
+<p> The pair \( (d,n) \) forms private key (actually just \( d \) is private - \( n \) is public). </p>
+
+<p> In order to recover the original message, we should select \( e \) and \( d \) such that \( ed = 1 \) (actually \( ed  \) will be congruent to 1 modulo \( \varphi(n) \)  as explained later below).  In this case, </p>
+
+<p class="eq1">
+$$ \begin{align}r &= m^{ed} \, \, mod \, \, n   \hspace{100cm} \\
+     &= m \, \, mod \, \, n   \\
+\end{align}$$
+</p>
+
+<p> Now, let's come back to \( \varphi(n) \). \( \varphi(n) \) is Euler's totient function of \( n \). Euler's theorem states that if \( n \) is a positive integer and \( a \) and \( n \) are coprime, then 
+</p> 
+
+<p class="eq1">
+\( a^{\varphi(n)} \, \equiv \, 1 \,\, (mod \, n) \)
+</p>
+
+<p> If we select \( ed \equiv \, 1 \,\,(mod \, \varphi(n)) \), then <p>
+
+<p class="eq1">
+$$ \begin{align}r &= m^{ed} \, \, mod \, \, n   \hspace{100cm} \\
+     &\equiv m^{k \varphi(n) + 1} \, \, (mod \, \, n )   \\
+     &\equiv m^{k \varphi(n)} * m \, \, (mod \, \, n  ) \\
+     &\equiv (m^{\varphi(n)})^k * m \, \, (mod \, \, n  ) \\
+     &\equiv (1)^k * m \, \, (mod \, \, n  ) \\
+     &\equiv m \, \, (mod \, \, n  ) \\
+\end{align}$$
+</p>
+
+<p> Now, if select \( m \) < \( n \), then \( r \) equals \( m \). Thus, we have recovered the original message.</p>
+</body>
+</html>
+
+<h1>Selection of n, e and d </h1>
+
+<p> The value \( n \) is selected as a product of two large prime numbers, \( p \) and \( q \). </p>
+
+<p> Then \( e \) is picked to be some value (typically small) that is relatively prime to \( n \). </p>
+
+<p>The Euler totient function of n ( \( \varphi(n) \) ) equals \( (p-1)(q-1) \). </p>
+
+<p>Value of d is computed from \( e \) and \( \varphi(n) \) using extended Euclidean algorithm. </p>
+
+
+<h1>Example </h1>
+
+<p> Following example uses small values for \( p \) and \( q \) for easy calculations. </p>
+
+<p> Let \( p = 7 \) and \( q = 29 \). </p>
+
+<p> Then, \( n = pq = 203 \) and \( \varphi(n) = (7-1)(29-1) = 168 \). </p>
+
+<p> Let's pick \( e = 5 \) (which is relatively prime to \( n=168 \)). </p>
+
+<p> Using extended Euclidean algorithm, \( d = 101 \).  </p>
+
+<p> Now, let's say we want to send message, \( m = 114 \). The encyrption and decryption compuations are shown below:</p>
+
+<p class="eq1">
+$$ \begin{align}c &= m^e \, \, mod \, \, n   \hspace{100cm} \\
+     &= 114^5  \, \, mod \, \, 203    \\
+     &= 200 \\
+\end{align}$$
+</p>
+
+<p class="eq1">
+$$ \begin{align}r &= c^d \, \, mod \, \, n   \hspace{100cm} \\
+     &= 200^{101}  \, \, mod \, \, 203    \\
+     &= 114 \\
+\end{align}$$
+</p>
+
+
